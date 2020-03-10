@@ -1,4 +1,4 @@
-curl -o rootfs.tar.xz https://mirrors.tuna.tsinghua.edu.cn/lxc-images/images/archlinux/current/arm64/default/20200308_04%3A18/rootfs.tar.xz
+curl -o rootfs.tar.xz https://mirror.tuna.tsinghua.edu.cn/lxc-images/images/archlinux/current/arm64/default/20200310_04%3A18/rootfs.tar.xz
 mkdir Arch
 mkdir Arch-binds
 proot --link2symlink tar -pJvxf rootfs.tar.xz -C Arch
