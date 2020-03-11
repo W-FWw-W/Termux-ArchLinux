@@ -1,17 +1,17 @@
-#pkg up
+pkg up
 #升级
-#termux-setup-storage
+termux-setup-storage
 #读取sdcard
-#vim $PREFIX/etc/motd
-#pkg install root-repo x11-repo
+rm -rf $PREFIX/etc/motd
+pkg install root-repo x11-repo
 #安装依赖
 apt install -y proot vim nano openssh wget git zsh
 #安装依赖
-#sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 #安装ZSH
 #cd ~
-#git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-#vim .zshrc
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="powerlevel10k/powerlevel10k"/g' .zshrc
 # 更改Zsh主题 themes --> ZSH_THEME="powerlevel10k/powerlevel10k"
 curl -o rootfs.tar.xz https://mirror.tuna.tsinghua.edu.cn/lxc-images/images/archlinux/current/arm64/default/20200310_04%3A18/rootfs.tar.xz
 #下载Arch System
