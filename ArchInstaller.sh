@@ -64,6 +64,7 @@ wget https://github.com/W-FWw-W/Termux-ArchLinux/raw/master/start-archlinux.sh
 sed -i 's/#Color/Color/g' Arch/etc/pacman.conf
 
 Arch
+usermod -l root fww
 pacman-key --init
 pacman-key --populate
 pacman -Sy
