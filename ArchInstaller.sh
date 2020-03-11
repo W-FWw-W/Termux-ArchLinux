@@ -60,7 +60,7 @@ else
 $command -c "$com"
 fi
 EndOfFile
-
+wget https://github.com/W-FWw-W/Termux-ArchLinux/raw/master/start-archlinux.sh
 sed -i 's/#Color/Color/g' Arch/etc/pacman.conf
 
 Arch
