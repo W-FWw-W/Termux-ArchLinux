@@ -3,7 +3,7 @@
 #termux-setup-storage
 #读取sdcard
 #vim $PREFIX/etc/motd
-#pkg root-repo x11-repo
+#pkg install root-repo x11-repo
 #安装依赖
 apt install -y proot vim nano openssh wget git zsh
 #安装依赖
