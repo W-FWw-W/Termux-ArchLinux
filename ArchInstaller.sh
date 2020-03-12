@@ -64,11 +64,14 @@ wget https://github.com/W-FWw-W/Termux-ArchLinux/raw/master/start-archlinux.sh
 sed -i 's/#Color/Color/g' Arch/etc/pacman.conf
 
 Arch
-usermod -l root fww
+usermod -l fww root
 pacman-key --init
 pacman-key --populate
 pacman -Sy
 pacman -Syyuu
+pacman -S neofetch
+vim ~/.bashrc
+#neofetch
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 pacman -S sudo vim neofetch tigervnc
 
