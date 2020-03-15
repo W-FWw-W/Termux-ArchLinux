@@ -4,8 +4,8 @@ pulseaudio --start >>/dev/null 2>&1
 unset LD_PRELOAD
 command="proot"
 command+=" --link2symlink"
-command+=" -0"
-command+=" -r Arch-rootfs"
+command+=" -i 0:0"
+command+=" -r Arch-Rootfs"
 if [ -n "$(ls -A Arch-binds)" ]; then
 for f in Arch-binds/* ;do
 . $f
@@ -13,7 +13,7 @@ done
 fi
 command+=" -b /dev"
 command+=" -b /proc"
-command+=" -b Arch-rootfs/root:/dev/shm"
+command+=" -b Arch-Rootfs/root:/dev/shm"
 command+=" -w /root"
 command+=" /usr/bin/env -i"
 command+=" HOME=/root"
