@@ -21,7 +21,7 @@ sed -i 's/#Color/Color/g' /data/chroot/Arch/etc/pacman.conf
 sed -i -e '1i Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo' /data/chroot/Arch/etc/pacman.d/mirrorlist
 
 
-vim Arch-Rootfs/etc/locale.gen
+vim /data/chroot/Arch/etc/locale.gen
 #en_US
 vim /data/chroot/Arch/etc/locale.conf
 #LANG=en_US.UTF-8
