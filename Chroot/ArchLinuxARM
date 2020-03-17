@@ -1,17 +1,27 @@
 pkg up
+#刷新包
 rm -rf $PREFIX/etc/motd
+vi $PREFIX/etc/motd
+##Welcome to Terminal Unix
+vi $PREFIX/etc/profile
+##neofetch
+#编辑开屏文本
 pkg install x11-repo
-pkg install vim proot git neofetch e2fsprogs wget openssh
+pkg install vim proot git e2fsprogs wget openssh neofetch
+#
 termux-setup-storage
 termux-wake-lock
+#
 cd /sdcard/
 truncate --size 10240M Arch.img
 mkfs.ext4 Arch.img
+#创建10240M映像文件
 su
 mkdir /data/chroot
 mkdir /data/chroot/Arch/
 losetup /dev/block/loop7 /sdcard/Arch.img
 mount -t ext4 /dev/block/loop7 /data/chroot/Arch
+#创建文件夹并挂载映像文件
 cd /data/chroot/Arch/
 tar zxvpf /sdcard/Arch.tar.gz
 rm /data/chroot/Arch/etc/resolv.conf
@@ -19,18 +29,19 @@ echo -e "nameserver 8.8.8.8\nnameserver 240c::6666"  > /data/chroot/Arch/etc/res
 echo "unset LD_PRELOAD" >> /data/chroot/Arch/etc/profile
 sed -i 's/#Color/Color/g' /data/chroot/Arch/etc/pacman.conf
 sed -i -e '1i Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo' /data/chroot/Arch/etc/pacman.d/mirrorlist
-
+#解压Rootfs系统到映像文件并设置DNS，色彩显示和清华开源镜像服务器
 
 vim /data/chroot/Arch/etc/locale.gen
-#en_US
+##zh_CN
 vim /data/chroot/Arch/etc/locale.conf
-#LANG=en_US.UTF-8
+##LANG=zh_CN.UTF-8
 vim /data/chroot/Arch/etc/hostname
-#LinuxArm-FWw
+##LinuxArm-FWw
 vim /data/chroot/Arch/etc/hosts
-#127.0.0.1  localhost
-#127.0.1.1  LinuxArm-FWw
-#::1  localhost
+##127.0.0.1  localhost
+##127.0.1.1  LinuxArm-FWw
+##::1  localhost
+#设置语言本地化，主机名和hosts
 
 mount -o bind /dev/ /data/chroot/Arch/dev/
 mount -t proc proc /data/chroot/Arch/proc/
@@ -38,11 +49,10 @@ mount -t sysfs sysfs /data/chroot/Arch/sys/
 mount -t tmpfs tmpfs /data/chroot/Arch/tmp/
 mount -t devpts devpts /data/chroot/Arch/dev/pts/
 chroot /data/chroot/Arch/ /bin/bash --login
+#挂载必要的目录启动LinuxARM
 
 
 
-
-#ln -sf /proc/mounts /etc/mtab
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 locale-gen
 userdel alarm
