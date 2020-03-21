@@ -86,6 +86,7 @@ vim ~/.vnc/xstartup
 #unset SESSION_MANAGER
 #unset DBUS_SESSION_BUS_ADDRESS
 #exec dbus-launch startxfce4
+
 sudo chmod .vnc/xstartup
 
 export DISPLAY=:1
@@ -93,7 +94,7 @@ export USER=fww
 export HOME=/home/fww
 
 
-vncserver -geometry 720x1440 -depth 24 -name remote-desktop :1
+vncserver -geometry 2340x1080 -depth 24 -name remote-desktop :1
 
 
 
