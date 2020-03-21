@@ -77,7 +77,7 @@ sudo pacman -Rn fakeroot
 sudo pacman -S fakeroot-tcp
 cd yay
 makepkg
-sudo pacman -U *.pkg.tar.gz
+sudo pacman -U *.pkg.tar.xz
 
 cd ~
 mkdir .vnc
