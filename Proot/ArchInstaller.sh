@@ -60,27 +60,33 @@ pacman-key --init
 pacman-key --populate
 pacman -Sy
 pacman -Syyuu
+pacman -S archlinuxcn-keyring
 #pacman.conf --SigLevel = Optional TrustAll--
 vim ~/.bashrc
 #neofetch
 
 
-pacman -S base base-devel git go zsh neofetch man-pages-zh_cn noto-fonts-cjk tigervnc xfce4 vim
+pacman -S base base-devel git go zsh neofetch man-pages-zh_cn noto-fonts-cjk tigervnc xfce4 vim sudo
+
+visudo
+
+su - fww
 
 git clone https://aur.archlinux.org/yay.git
-pacman -Rn fakeroot
-pacman -S fakeroot-tcp
+sudo pacman -Rn fakeroot
+sudo pacman -S fakeroot-tcp
 cd yay
 makepkg
-pacman -U *.pkg.tar.gz
+sudo pacman -U *.pkg.tar.gz
 
-
+cd ~
+mkdir .vnc
 vim ~/.vnc/xstartup
 ##!/bin/sh
 #unset SESSION_MANAGER
 #unset DBUS_SESSION_BUS_ADDRESS
 #exec dbus-launch startxfce4
-chmod +x ~/.vnc/xstartup
+sudo chmod .vnc/xstartup
 
 export DISPLAY=:1
 export USER=fww
