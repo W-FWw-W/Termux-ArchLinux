@@ -8,15 +8,9 @@ rm -rf $PREFIX/etc/motd
 #
 pkg install x11-repo
 #安装依赖
-apt install -y proot vim openssh wget git #zsh
+apt install -y proot vim openssh wget git
 #安装依赖
-#sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-#安装ZSH
-#git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-#
-#sed -i 's:ZSH_THEME="robbyrussell":ZSH_THEME="powerlevel10k/powerlevel10k":' .zshrc
-# 更改Zsh主题 themes --> ZSH_THEME="powerlevel10k/powerlevel10k"
-cd ~
+
 curl -o rootfs.tar.xz https://mirror.tuna.tsinghua.edu.cn/lxc-images/images/archlinux/current/amd64/default/20200312_04%3A18/rootfs.tar.xz
 #下载Arch System
 mkdir Arch-Rootfs
@@ -34,6 +28,7 @@ rm -rf Arch-Rootfs/etc/resolv.conf
 rm -rf Arch-Rootfs/home/alarm
 echo -e "nameserver 8.8.8.8\nnameserver 240c::6666" > Arch-Rootfs/etc/resolv.conf
 sed -i -e '1i Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo' Arch-Rootfs/etc/pacman.d/mirrorlist
+echo -e '[archlinuxcn]\nSigLevel = Optional TrustAll\nServer = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> Arch-Rootfs/etc/pacman.conf
 sed -i 's/#Color/Color/g' Arch-Rootfs/etc/pacman.conf
 
 vim Arch-Rootfs/etc/locale.gen
@@ -52,7 +47,7 @@ chmod +x start-archlinux.sh
 vim start-archlinux.sh
 ./start-archlinux.sh
 
-ln -sf /proc/mounts /etc/mtab
+
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 locale-gen
 userdel alarm
@@ -65,18 +60,42 @@ pacman-key --init
 pacman-key --populate
 pacman -Sy
 pacman -Syyuu
+#pacman.conf --SigLevel = Optional TrustAll--
 vim ~/.bashrc
 #neofetch
 
 
-#pacman -S base base-devel git go
-#
-#git clone https://aur.archlinux.org/yay.git
-#pacman -Rn fakeroot
-#pacman -S fakeroot-tcp
-#cd yay
-#su fww -c "makepkg"
+pacman -S base base-devel git go zsh neofetch man-pages-zh_cn noto-fonts-cjk tigervnc xfce4 vim
+
+git clone https://aur.archlinux.org/yay.git
+pacman -Rn fakeroot
+pacman -S fakeroot-tcp
+cd yay
+makepkg
+pacman -U *.pkg.tar.gz
 
 
-#pacman -S xfce4 startxfce4
+vim ~/.vnc/xstartup
+##!/bin/sh
+#unset SESSION_MANAGER
+#unset DBUS_SESSION_BUS_ADDRESS
+#exec dbus-launch startxfce4
+chmod +x ~/.vnc/xstartup
+
+export DISPLAY=:1
+export USER=fww
+export HOME=/home/fww
+
+
+vncserver -geometry 720x1440 -depth 24 -name remote-desktop :1
+
+
+
+
+#sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#安装ZSH
+#git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
 #
+#sed -i 's:ZSH_THEME="robbyrussell":ZSH_THEME="powerlevel10k/powerlevel10k":' .zshrc
+# 更改Zsh主题 themes --> ZSH_THEME="powerlevel10k/powerlevel10k"
+cd ~
