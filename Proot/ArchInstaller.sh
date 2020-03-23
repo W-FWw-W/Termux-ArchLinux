@@ -36,8 +36,6 @@ vim Arch-Rootfs/etc/locale.gen
 vim Arch-Rootfs/etc/locale.conf
 #LANG=en_US.UTF-8
 
-vim Arch-Rootfs/etc/hostname
-#LinuxArm-FWw
 vim Arch-Rootfs/etc/hosts
 #127.0.0.1  localhost
 #127.0.1.1  LinuxArm-FWw
@@ -69,8 +67,8 @@ vim ~/.bashrc
 pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji adobe-source-han-sans-cn-fonts
 locale-gen
 
-pacman -S base base-devel git go zsh neofetch man-pages-zh_cn tigervnc xfce4 vim sudo
-
+pacman -S base base-devel git go zsh neofetch man-pages-zh_cn tigervnc xfce4 vim sudo lightdm lightdm-gtk-greeter-settings aria2  xfce4-taskmanager 
+pacman -S mousepad inkscape vlc gimp engrampa intellij-idea-ultimate-edition codeblocks  geany eclipse-ecj qtcreator
 visudo
 
 su - fww
