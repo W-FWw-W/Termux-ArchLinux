@@ -22,7 +22,7 @@ proot --link2symlink tar -pJvxf rootfs.tar.xz -C Arch-Rootfs
 unset LD_PRELOAD
 #设置初始化
 
-wget https://github.com/W-FWw-W/Termux-ArchLinux/raw/master/start-archlinux.sh
+wget https://raw.githubusercontent.com/W-FWw-W/Termux-ArchLinux/master/Proot/start-archlinux.sh
 
 rm -rf Arch-Rootfs/etc/resolv.conf
 rm -rf Arch-Rootfs/home/alarm
@@ -49,9 +49,10 @@ vim start-archlinux.sh
 
 
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-locale-gen
+
 userdel alarm
 useradd -m -g users -G wheel fww
+## 1000 985
 passwd fww
 passwd root
 
@@ -65,8 +66,10 @@ pacman -S archlinuxcn-keyring
 vim ~/.bashrc
 #neofetch
 
+pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji adobe-source-han-sans-cn-fonts
+locale-gen
 
-pacman -S base base-devel git go zsh neofetch man-pages-zh_cn noto-fonts-cjk tigervnc xfce4 vim sudo
+pacman -S base base-devel git go zsh neofetch man-pages-zh_cn tigervnc xfce4 vim sudo
 
 visudo
 
