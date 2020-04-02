@@ -107,3 +107,6 @@ vncserver -geometry 2340x1080 -depth 24 -name ArchLinuxARM :1
 #sed -i 's:ZSH_THEME="robbyrussell":ZSH_THEME="powerlevel10k/powerlevel10k":' .zshrc
 # 更改Zsh主题 themes --> ZSH_THEME="powerlevel10k/powerlevel10k"
 cd ~
+
+git clone https://github.com/vinceliuice/Qogir-icon-theme.git
+git clone https://github.com/vinceliuice/Matcha-gtk-theme.git
