@@ -166,11 +166,11 @@ General help using GNU software: <http://www.gnu.org/gethelp/>.
 export PATH=$PATH:/opt/android-ndk/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin
 export PATH=$PATH:/opt/armv8l-gnueabihf-gcc/bin
 
+./configure --enable-single-binary=shebangs --host=aarch64-linux-gnu-gcc CFLAGS="-pie -fPIE -static"
 
 
-
-
-
+我在./configure 后加了   CFLAGS=-static --enable-static LDFLAGS=-static --disable-shared
+https://wenku.baidu.com/view/b04c8799185f312b3169a45177232f60ddcce7f1.html
 
 
 
