@@ -97,7 +97,10 @@ export HOME=/home/fww
 
 vncserver -geometry 2340x1080 -depth 24 -name ArchLinuxARM :1
 
-
+#XSDL
+export DISPLAY=127.0.0.1:0
+export PULSE_SERVER=tcp:127.0.0.1:4712
+startxfce4
 
 
 #sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
