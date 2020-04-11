@@ -1,62 +1,81 @@
-pkg up
-#刷新包
-rm -rf $PREFIX/etc/motd
-vi $PREFIX/etc/motd
-##Welcome to Terminal Unix
-vi $PREFIX/etc/profile
-##neofetch
-#编辑开屏文本
-pkg install x11-repo
-pkg install vim proot git e2fsprogs wget openssh neofetch
-#
-termux-setup-storage
-termux-wake-lock
-#
-cd /sdcard/
-truncate --size 10240M Arch.img
-mkfs.ext4 Arch.img
-#创建10240M映像文件
-su
+
+adb root
+adb disable-verity
+adb reboot
+adb root
+adb remount
+#ROOT 解锁SYSTEM分区
+
+adb push chroot /system/bin
+adb push busybox /system/xbin
+adb shell chmod +x /system/bin/chroot
+adb shell chmod +x /system/xbin/busybox
+adb shell busybox --install /system/xbin/
+
+
+mkdir /sdcard/Android/Image
+cd /sdcard/Android/Image
+truncate -s 15360M Arch-Rootfs.img
+mkfs.ext4 Arch-Rootfs.img
+
+
 mkdir /data/chroot
-mkdir /data/chroot/Arch/
-losetup /dev/block/loop7 /sdcard/Arch.img
-mount -t ext4 /dev/block/loop7 /data/chroot/Arch
-#创建文件夹并挂载映像文件
-cd /data/chroot/Arch/
+mkdir /data/chroot/Arch-Rootfs
+
+
+losetup /dev/block/loop1 /sdcard/Android/Image/Arch-Rootfs.img
+#losetup -d /dev/block/loop1
+
+mount -t ext4 /dev/block/loop1 /data/chroot/Arch-Rootfs
+cd /data/chroot/Arch-Rootfs
 tar zxvpf /sdcard/Arch.tar.gz
-rm /data/chroot/Arch/etc/resolv.conf
-echo -e "nameserver 8.8.8.8\nnameserver 240c::6666"  > /data/chroot/Arch/etc/resolv.conf
-echo "unset LD_PRELOAD" >> /data/chroot/Arch/etc/profile
-sed -i 's/#Color/Color/g' /data/chroot/Arch/etc/pacman.conf
-sed -i -e '1i Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo' /data/chroot/Arch/etc/pacman.d/mirrorlist
-#解压Rootfs系统到映像文件并设置DNS，色彩显示和清华开源镜像服务器
+#准备Arch-Rootfs
 
-vim /data/chroot/Arch/etc/locale.gen
-##zh_CN
-vim /data/chroot/Arch/etc/locale.conf
-##LANG=zh_CN.UTF-8
-vim /data/chroot/Arch/etc/hostname
-##LinuxArm-FWw
-vim /data/chroot/Arch/etc/hosts
-##127.0.0.1  localhost
-##127.0.1.1  LinuxArm-FWw
-##::1  localhost
-#设置语言本地化，主机名和hosts
 
-mount -o bind /dev/ /data/chroot/Arch/dev/
-mount -t proc proc /data/chroot/Arch/proc/
-mount -t sysfs sysfs /data/chroot/Arch/sys/
-mount -t tmpfs tmpfs /data/chroot/Arch/tmp/
-mount -t devpts devpts /data/chroot/Arch/dev/pts/
-chroot /data/chroot/Arch/ /bin/bash --login
-#挂载必要的目录启动LinuxARM
+cd /data/chroot/
+rm Arch-Rootfs/etc/resolv.conf
+rm -rf Arch-Rootfs/home/alarm
+echo -e "nameserver 8.8.8.8\nnameserver 240c::6666" > Arch-Rootfs/etc/resolv.conf
+echo "unset LD_PRELOAD" >> Arch-Rootfs/etc/profile
+sed -i -e '1i Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/$arch/$repo' Arch-Rootfs/etc/pacman.d/mirrorlist
+echo -e '[archlinuxcn]\nSigLevel = Optional TrustAll\nServer = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> Arch-Rootfs/etc/pacman.conf
+sed -i 's/#Color/Color/g' Arch-Rootfs/etc/pacman.conf
 
+vi Arch-Rootfs/etc/locale.gen
+#en_US
+vi Arch-Rootfs/etc/locale.conf
+#LANG=en_US.UTF-8
+
+vi Arch-Rootfs/etc/hosts
+#127.0.0.1  localhost
+#::1  localhost
+#127.0.1.1  LinuxArm-FWw
+
+vi Arch-Rootfs/etc/hostname
+#LinuxARM64
+
+
+mount -o bind /dev/ /data/chroot/Arch-Rootfs/dev/
+mount -t proc proc /data/chroot/Arch-Rootfs/proc/
+mount -t sysfs sysfs /data/chroot/Arch-Rootfs/sys/
+mount -t tmpfs tmpfs /data/chroot/Arch-Rootfs/tmp/
+mount -t devpts devpts /data/chroot/Arch-Rootfs/pts/
+
+chroot --userspec=0:0 /data/chroot/Arch-Rootfs/ /bin/bash --login
 
 
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
 locale-gen
+
 userdel alarm
 useradd -m -g users -G wheel fww
+
+
+#vi Arch-Rootfs/home/fww/.bashrc
+#export HOME=/home/fww
+#cd ~
+
 passwd fww
 passwd root
 
@@ -65,39 +84,47 @@ pacman-key --init
 pacman-key --populate
 pacman -Sy
 pacman -Syyuu
-
+pacman -S archlinuxcn-keyring
+#pacman.conf --SigLevel = Optional TrustAll--
 vim ~/.bashrc
 #neofetch
 
-#pacman -S base base-devel git go
-#
-#git clone https://aur.archlinux.org/yay.git
-#pacman -Rn fakeroot
-#pacman -S fakeroot-tcp
-#cd yay
-#su fww -c "makepkg"
+pacman -S noto-fonts noto-fonts-cjk noto-fonts-emoji adobe-source-han-sans-cn-fonts
+locale-gen
+
+pacman -S base base-devel git go zsh neofetch man-pages-zh_cn tigervnc xfce4 vim sudo lightdm lightdm-gtk-greeter-settings aria2  xfce4-taskmanager 
+pacman -S mousepad inkscape vlc gimp engrampa intellij-idea-ultimate-edition codeblocks  geany eclipse-ecj qtcreator
+visudo
+
+git clone https://aur.archlinux.org/yay.git
+sudo pacman -Rn fakeroot
+sudo pacman -S fakeroot-tcp
+cd yay
+makepkg
+sudo pacman -U *.pkg.tar.xz
+
+cd ~
+mkdir .vnc
+vim ~/.vnc/xstartup
+##!/bin/sh
+#unset SESSION_MANAGER
+#unset DBUS_SESSION_BUS_ADDRESS
+#exec dbus-launch startxfce4
+
+sudo chmod +x .vnc/xstartup
+
+export DISPLAY=:1
+export USER=fww
+export HOME=/home/fww
 
 
-#pacman -S xfce4 startxfce4
+vncserver -geometry 2340x1080 -depth 24 -name ArchLinuxARM :1
+
+#XSDL
+export DISPLAY=127.0.0.1:0
+export PULSE_SERVER=tcp:127.0.0.1:4712
+startxfce4
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+git clone https://github.com/vinceliuice/Qogir-icon-theme.git
+git clone https://github.com/vinceliuice/Matcha-gtk-theme.git
