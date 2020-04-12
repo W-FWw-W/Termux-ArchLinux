@@ -52,16 +52,18 @@ vi Arch-Rootfs/etc/hosts
 #127.0.1.1  LinuxArm-FWw
 
 vi Arch-Rootfs/etc/hostname
-#LinuxARM64
+#LinuxARM
 
 
 mount -o bind /dev/ /data/chroot/Arch-Rootfs/dev/
 mount -t proc proc /data/chroot/Arch-Rootfs/proc/
 mount -t sysfs sysfs /data/chroot/Arch-Rootfs/sys/
 mount -t tmpfs tmpfs /data/chroot/Arch-Rootfs/tmp/
-mount -t devpts devpts /data/chroot/Arch-Rootfs/pts/
+mount -t devpts devpts /data/chroot/Arch-Rootfs/dev/pts/
 
-chroot --userspec=0:0 /data/chroot/Arch-Rootfs/ /bin/bash --login
+
+
+chroot --userspec=1000:985 /usr/bin/env -i USER=fww PWD=/home/fww NAME=LinuxARM SHELL=/bin/bash PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games PS1='\u:\w\$ ' TERM="$TERM" /data/chroot/Arch-Rootfs/ /bin/bash --login +h
 
 
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
