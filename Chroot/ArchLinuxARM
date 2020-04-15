@@ -63,7 +63,17 @@ mount -t devpts devpts /data/chroot/Arch-Rootfs/dev/pts/
 
 
 
-chroot --userspec=1000:985 /usr/bin/env -i USER=fww PWD=/home/fww NAME=LinuxARM SHELL=/bin/bash PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games PS1='\u:\w\$ ' TERM="$TERM" /data/chroot/Arch-Rootfs/ /bin/bash --login +h
+##mount -o bind /proc /opt/proc
+##mount -o bind /dev /opt/dev
+##mount -o bind /dev/pts /opt/dev/pts
+##mount -o bind /dev/shm /opt/dev/shm
+##mount -o bind /tmp /opt/tmp
+##mount -o bind /home /opt/home
+##mount -o bind /sys /opt/sys
+
+
+
+chroot --userspec=1000:985 /data/chroot/Arch-Rootfs/ /usr/bin/env -i HOME=/home/fww TERM="$TERM" PS1='\u:\w\$ ' USER=fww PWD=/home/fww NAME=LinuxARM SHELL=/bin/bash PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games /bin/bash -login +h
 
 
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
